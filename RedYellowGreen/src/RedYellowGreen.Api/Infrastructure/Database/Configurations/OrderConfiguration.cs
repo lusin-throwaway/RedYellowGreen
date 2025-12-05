@@ -12,5 +12,7 @@ internal class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
             .HasOne(order => order.Equipment)
             .WithMany(equipment => equipment.Orders)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(x => x.Status);
     }
 }
