@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using RedYellowGreen.Api.Features.Equipment.Models;
 using RedYellowGreen.Api.Infrastructure.Database;
+using RedYellowGreen.Api.Infrastructure.Database.Extensions;
 
 namespace RedYellowGreen.Api.Features.Equipment.Endpoints.Queries;
 
@@ -20,5 +20,5 @@ public class GetEquipmentStateHistory : BaseEquipmentController
         await context.Equipment
             .Where(equipment => equipment.Id == equipmentId)
             .Select(equipment => equipment.States.Select(state => new Result(state.State, state.CreatedAt)).ToArray())
-            .SingleAsync();
+            .SingleOrNotFoundAsync();
 }
