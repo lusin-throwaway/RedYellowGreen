@@ -1,9 +1,12 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path="../compose.yaml" />
+    <File Path="Directory.build.props" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/RedYellowGreen.Api/RedYellowGreen.Api.csproj" />
   </Folder>
-  <Folder Name="/test/" />
+  <Folder Name="/test/">
+    <Project Path="test/Integration.Tests/Integration.Tests.csproj" />
+  </Folder>
 </Solution>
