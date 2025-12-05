@@ -1,10 +1,26 @@
+using Microsoft.EntityFrameworkCore;
+using RedYellowGreen.Api.Infrastructure.Database;
+using RedYellowGreen.Api.Infrastructure.Database.Interceptors;
+
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+services
+    .AddSingleton(TimeProvider.System)
+    .AddScoped<AuditableFieldsInterceptor>()
+    .AddDbContext<AppDbContext>((serviceProvider, options) =>
+    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+        options.AddInterceptors(serviceProvider.GetRequiredService<AuditableFieldsInterceptor>());
+    })
+    ;
+
+
+services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+services.AddOpenApi();
 
 var app = builder.Build();
 
