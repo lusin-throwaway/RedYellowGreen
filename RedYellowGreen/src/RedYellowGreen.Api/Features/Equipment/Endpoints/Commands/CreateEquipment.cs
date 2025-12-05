@@ -11,7 +11,7 @@ public class CreateEquipment : BaseEquipmentController
     public async Task<Guid> Handle(
         [FromServices] AppDbContext dbContext,
         [FromServices] ILogger<CreateEquipment> logger,
-        [FromBody] CreateEquipmentRequest request)
+        [FromBody] Request request)
     {
         var equipment = EquipmentEntity.Create(request.Title);
         dbContext.Add(equipment);
@@ -21,7 +21,7 @@ public class CreateEquipment : BaseEquipmentController
         return equipment.Id;
     }
 
-    public record CreateEquipmentRequest(
+    public record Request(
         [StringLength(255, MinimumLength = 5)]
         string Title
     );
