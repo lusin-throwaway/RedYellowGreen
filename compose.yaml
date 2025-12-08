@@ -5,6 +5,11 @@
     build:
       context: ./RedYellowGreen
       dockerfile: src/RedYellowGreen.Api/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=database;Database=RedYellowGreenDb;Username=root;Password=root;Port=5432"
+      ASPNETCORE_URLS: http://+:5000
+      ASPNETCORE_ENVIRONMENT: Development
+      RUN_MIGRATIONS: true
 
   database:
     image: postgres:18
