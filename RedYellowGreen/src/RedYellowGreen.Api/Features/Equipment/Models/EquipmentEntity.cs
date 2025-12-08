@@ -26,17 +26,17 @@ internal class EquipmentEntity : BaseEntity
         init => _states = value.ToList();
     }
 
+    public List<OrderEntity> Orders { get; set; } = [];
+
     public void SetState(EquipmentState state)
     {
         if (CurrentState.State == state)
             throw new BadRequestException($"Equipment {Id} is already in state {state}");
 
         var newState = new EquipmentStateEntity { State = state };
-        CurrentState = new(newState.Id, newState.State);
+        CurrentState = new EquipmentCurrentState(newState.Id, newState.State);
         _states.Add(newState);
     }
-
-    public List<OrderEntity> Orders { get; set; } = [];
 
     /*
      * Used a factory method here because I wanted to make it impossible

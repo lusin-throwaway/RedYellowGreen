@@ -10,5 +10,5 @@ public enum EquipmentState
     Yellow,
 
     // Producing normally
-    Green,
+    Green
 }

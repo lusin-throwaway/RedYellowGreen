@@ -8,6 +8,6 @@ public abstract class BaseEntity
     // to know what the id will be
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public Guid Id { get; set; } = Guid.CreateVersion7();
-
+    
     public DateTime CreatedAt { get; set; }
 }

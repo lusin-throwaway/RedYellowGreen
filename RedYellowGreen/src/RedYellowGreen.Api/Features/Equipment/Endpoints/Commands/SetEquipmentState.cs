@@ -8,8 +8,6 @@ namespace RedYellowGreen.Api.Features.Equipment.Endpoints.Commands;
 
 public class SetEquipmentState : BaseEquipmentController
 {
-    public record Request(EquipmentState State);
-
     [HttpPut("{equipmentId:guid}/state")]
     public async Task Handle(
         [FromServices] AppDbContext dbContext,
@@ -32,4 +30,6 @@ public class SetEquipmentState : BaseEquipmentController
         await dbContext.SaveChangesAsync();
         await bus.Publish(new EquipmentStateChanged(equipmentId, request.State));
     }
+
+    public record Request(EquipmentState State);
 }

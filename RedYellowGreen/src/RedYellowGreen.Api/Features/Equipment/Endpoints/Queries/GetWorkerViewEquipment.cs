@@ -8,16 +8,6 @@ namespace RedYellowGreen.Api.Features.Equipment.Endpoints.Queries;
 
 public class GetWorkerViewEquipment : BaseEquipmentController
 {
-    public record Order(Guid Id, string Number, DateTime CreatedAt);
-
-    public record Result(
-        Guid Id,
-        string Title,
-        EquipmentState State,
-        Order? CurrentOrder,
-        Order[] ScheduledOrders
-    );
-
     [HttpGet("worker-view")]
     public async Task<Result[]> Handle(
         [FromServices] AppDbContext context
@@ -52,4 +42,14 @@ public class GetWorkerViewEquipment : BaseEquipmentController
             })
             .ToArray();
     }
+
+    public record Order(Guid Id, string Number, DateTime CreatedAt);
+
+    public record Result(
+        Guid Id,
+        string Title,
+        EquipmentState State,
+        Order? CurrentOrder,
+        Order[] ScheduledOrders
+    );
 }

@@ -7,32 +7,32 @@ namespace RedYellowGreen.Api.Infrastructure.Database.Interceptors;
 internal sealed class AuditableFieldsInterceptor : SaveChangesInterceptor
 {
     private readonly TimeProvider _timeProvider;
-
+    
     public AuditableFieldsInterceptor(TimeProvider timeProvider)
     {
         _timeProvider = timeProvider;
     }
-
+    
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         PopulateTimestamps(eventData);
         return base.SavingChanges(eventData, result);
     }
-
+    
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,
-        CancellationToken cancellationToken = new CancellationToken())
+        CancellationToken cancellationToken = new())
     {
         PopulateTimestamps(eventData);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
-
+    
     private void PopulateTimestamps(DbContextEventData eventData)
     {
         if (eventData?.Context?.ChangeTracker is not { } changeTracker)
             return;
-
+        
         var now = _timeProvider.GetUtcNow();
         changeTracker
             .Entries<BaseEntity>()

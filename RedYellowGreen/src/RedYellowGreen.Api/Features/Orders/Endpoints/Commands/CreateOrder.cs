@@ -8,8 +8,6 @@ namespace RedYellowGreen.Api.Features.Orders.Endpoints.Commands;
 
 public class CreateOrder : BaseOrdersController
 {
-    public record Request(Guid EquipmentId);
-
     [HttpPost]
     public async Task<Guid> Handle(
         [FromServices] AppDbContext dbContext,
@@ -32,4 +30,6 @@ public class CreateOrder : BaseOrdersController
         await bus.Publish(new OrderCreated(order.Id, equipment.Id));
         return order.Id;
     }
+
+    public record Request(Guid EquipmentId);
 }

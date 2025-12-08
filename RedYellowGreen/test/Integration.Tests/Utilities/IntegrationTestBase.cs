@@ -10,10 +10,11 @@ public abstract class IntegrationTestBase
     private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
         .WithImage("postgres:18")
         .Build();
-
-    protected ApiClient Client = null!;
+    
     private ApiFactory _factory = null!;
-
+    
+    protected ApiClient Client = null!;
+    
     [TestInitialize]
     public async Task InitializeAsync()
     {
@@ -21,7 +22,7 @@ public abstract class IntegrationTestBase
         _factory = new ApiFactory(_postgres.GetConnectionString());
         Client = new ApiClient(_factory.CreateClient(), _factory);
     }
-
+    
     [TestCleanup]
     public async Task DisposeAsync()
     {

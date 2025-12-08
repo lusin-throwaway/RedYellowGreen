@@ -7,12 +7,12 @@ namespace Integration.Tests.Utilities;
 public class ApiFactory : WebApplicationFactory<Program>
 {
     private readonly string _connectionString;
-
+    
     public ApiFactory(string connectionString)
     {
         _connectionString = connectionString;
     }
-
+    
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureAppConfiguration(cfg =>
@@ -22,7 +22,7 @@ public class ApiFactory : WebApplicationFactory<Program>
                 ["ConnectionStrings:DefaultConnection"] = _connectionString
             });
         });
-
+        
         builder.ConfigureServices(services => { Environment.SetEnvironmentVariable("RUN_MIGRATIONS", "true"); });
     }
 }

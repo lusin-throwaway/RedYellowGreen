@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Integration.Tests.Utilities;
-using MassTransit;
 using Microsoft.AspNetCore.SignalR.Client;
 using RedYellowGreen.Api.Features.Equipment.Models;
 using RedYellowGreen.Api.Features.LiveUpdates;

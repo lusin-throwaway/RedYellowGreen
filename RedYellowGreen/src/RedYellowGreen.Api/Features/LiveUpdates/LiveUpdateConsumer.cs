@@ -24,16 +24,16 @@ internal sealed class LiveUpdateConsumer
             new ILiveUpdateHub.EquipmentStateChangedEvent(context.Message.EquipmentId, context.Message.State));
     }
 
+    public Task Consume(ConsumeContext<OrderCompleted> context)
+    {
+        _logger.LogInformation("Notifying about {@Event}", context.Message);
+        return _hubContext.Clients.All.OrderCompleted(new ILiveUpdateHub.OrderCompletedEvent(context.Message.OrderId));
+    }
+
     public Task Consume(ConsumeContext<OrderCreated> context)
     {
         _logger.LogInformation("Notifying about {@Event}", context.Message);
         return _hubContext.Clients.All.OrderCreated(
             new ILiveUpdateHub.OrderCreatedEvent(context.Message.OrderId, context.Message.EquipmentId));
-    }
-
-    public Task Consume(ConsumeContext<OrderCompleted> context)
-    {
-        _logger.LogInformation("Notifying about {@Event}", context.Message);
-        return _hubContext.Clients.All.OrderCompleted(new ILiveUpdateHub.OrderCompletedEvent(context.Message.OrderId));
     }
 }
