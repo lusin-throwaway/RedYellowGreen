@@ -84,6 +84,7 @@ export function useCompleteOrder() {
   });
 }
 
+
 async function fetchSupervisorView(): Promise<
   GetSupervisorViewEquipmentResult[]
 > {
