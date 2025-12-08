@@ -25,6 +25,5 @@ RUN dotnet publish "./RedYellowGreen.Api.csproj" -c $BUILD_CONFIGURATION -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-# ENTRYPOINT ["dotnet", "RedYellowGreen.Api.dll"]
 ENTRYPOINT ["/bin/sh", "-c", "echo 'Starting wait-for-it'; /app/wait-for-it.sh database:5432 -- echo 'Database is ready, starting app...' && dotnet RedYellowGreen.Api.dll"]
 
