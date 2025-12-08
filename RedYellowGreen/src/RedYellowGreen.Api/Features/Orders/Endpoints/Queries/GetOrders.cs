@@ -8,7 +8,7 @@ namespace RedYellowGreen.Api.Features.Orders.Endpoints.Queries;
 
 public class GetOrders : BaseOrdersController
 {
-    public record Equipment(Guid Id, EquipmentState State);
+    public record Equipment(Guid Id, string Title, EquipmentState State);
 
     public record Result(
         Guid Id,
@@ -29,6 +29,7 @@ public class GetOrders : BaseOrdersController
                     o.CreatedAt,
                     new Equipment(
                         o.Equipment.Id,
+                        o.Equipment.Title,
                         o.Equipment.CurrentState.State
                     )
                 )

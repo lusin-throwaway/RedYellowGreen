@@ -2,6 +2,7 @@ import { api } from "./client";
 import type {
   EquipmentState,
   GetEquipmentStateHistoryResult,
+  GetOrdersResult,
   GetSupervisorViewEquipmentResult,
   GetWorkerViewEquipmentResult,
 } from "./types";
@@ -26,6 +27,13 @@ export function useWorkerView() {
   return useQuery({
     queryKey: keys.workerView,
     queryFn: fetchWorkerView,
+  });
+}
+
+export function useGetOrders() {
+  return useQuery({
+    queryKey: keys.orders,
+    queryFn: fetchOrders,
   });
 }
 
@@ -103,6 +111,14 @@ async function fetchEquipmentStateHistory(
 ): Promise<GetEquipmentStateHistoryResult[]> {
   const { data } = await api.get(
     `/api/equipment/${equipmentId}/state-history`
+  );
+  return data;
+}
+
+async function fetchOrders(
+): Promise<GetOrdersResult[]> {
+  const { data } = await api.get(
+    `/api/orders`
   );
   return data;
 }

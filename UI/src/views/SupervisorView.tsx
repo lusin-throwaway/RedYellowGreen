@@ -3,13 +3,16 @@ import {
   useSupervisorView,
   useEquipmentStateHistory,
   useCreateOrder,
+  useGetOrders,
 } from "../api/queries";
+import type { GetOrdersResult } from "../api/types";
 
 export default function SupervisorView() {
   const { data: equipment, isLoading } = useSupervisorView();
   const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  if (isLoading || !equipment) return <div>Loading...</div>;
+  const { data: orders, isLoading: ordersLoading } = useGetOrders();
+  if (isLoading || !equipment || ordersLoading || !orders)
+    return <div>Loading...</div>;
 
   return (
     <div style={{ padding: 20 }}>
@@ -34,6 +37,28 @@ export default function SupervisorView() {
               <td>
                 <button onClick={() => setSelectedId(e.id)}>Details</button>
               </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2 style={{ marginTop: 40 }}>Orders</h2>
+      <table border={1} cellPadding={10} style={{ width: "100%" }}>
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Created At</th>
+            <th>Equipment</th>
+            <th>Equipment State</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders?.map((o: GetOrdersResult) => (
+            <tr key={o.id}>
+              <td>{o.number}</td>
+              <td>{new Date(o.createdAt).toLocaleString()}</td>
+              <td>{o.equipment.title}</td>
+              <td>{o.equipment.state}</td>
             </tr>
           ))}
         </tbody>

@@ -37,5 +37,6 @@ export type GetOrdersResult = {
 
 export type GetOrdersEquipment = {
   id: string;
+  title: string;
   state: EquipmentState;
 };
