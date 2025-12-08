@@ -12,7 +12,7 @@ public class GetOrders : BaseOrdersController
 
     public record Result(
         Guid Id,
-        string OrderNumber,
+        string Number,
         DateTime CreatedAt,
         Equipment Equipment
     );
