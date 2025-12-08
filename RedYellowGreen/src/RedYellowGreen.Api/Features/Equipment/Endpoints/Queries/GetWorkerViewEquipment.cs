@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RedYellowGreen.Api.Features.Equipment.Models;
+using RedYellowGreen.Api.Features.Orders.Models;
 using RedYellowGreen.Api.Infrastructure.Database;
 
 namespace RedYellowGreen.Api.Features.Equipment.Endpoints.Queries;
@@ -23,7 +24,8 @@ public class GetWorkerViewEquipment : BaseEquipmentController
     )
     {
         var equipment = await context.Equipment
-            .Include(equipment => equipment.Orders)
+            .Include(equipment => equipment.Orders.Where(order => order.Status != OrderStatus.Done))
+            .OrderBy(equipment => equipment.Title)
             .ToArrayAsync();
 
         return equipment

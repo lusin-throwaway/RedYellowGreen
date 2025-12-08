@@ -4,28 +4,32 @@ import { startSignalR } from "./api/signalr";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import SupervisorView from "./views/SupervisorView";
+import WorkerView from "./views/WorkerView";
 
-const qc = new QueryClient();
+const queryClient = new QueryClient();
 
 function App() {
   useEffect(() => {
-    const connection = startSignalR(qc);
+    const connection = startSignalR(queryClient);
 
-    // Cleanup must be synchronous
     return () => {
-      connection.stop().catch(() => {}); // ignore errors
+      connection.stop().catch(() => {}); 
     };
   }, []);
 
   return (
-    <QueryClientProvider client={qc}>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div style={{ display: "flex", gap: 20, padding: 20 }}>
+        {/* Navigation */}
+        <nav style={{ display: "flex", gap: 20, padding: 20 }}>
           <Link to="/">Supervisor View</Link>
-        </div>
+          <Link to="/worker">Worker View</Link>
+        </nav>
 
+        {/* Routes */}
         <Routes>
           <Route path="/" element={<SupervisorView />} />
+          <Route path="/worker" element={<WorkerView />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

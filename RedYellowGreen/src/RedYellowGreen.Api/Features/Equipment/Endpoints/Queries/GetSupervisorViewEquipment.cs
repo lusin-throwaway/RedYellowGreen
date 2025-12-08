@@ -18,6 +18,7 @@ public class GetSupervisorViewEquipment : BaseEquipmentController
         [FromServices] AppDbContext context
     ) =>
         await context.Equipment
+            .OrderBy(equipment => equipment.Title)
             .Select(equipment => new Result(equipment.Id, equipment.Title, equipment.CurrentState.State))
             .ToArrayAsync();
 }
