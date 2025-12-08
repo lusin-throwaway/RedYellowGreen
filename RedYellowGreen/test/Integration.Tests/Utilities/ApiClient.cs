@@ -35,6 +35,13 @@ public class ApiClient : FlurlClient
         );
     }
 
+    public HubConnection CreateLiveUpdatesHubConnection() =>
+        new HubConnectionBuilder()
+            .WithUrl($"{_factory.Server.BaseAddress}ws/updates",
+                options => { options.HttpMessageHandlerFactory = _ => _factory.Server.CreateHandler(); })
+            .WithAutomaticReconnect()
+            .Build();
+
     private static class JsonOptions
     {
         public static readonly JsonSerializerOptions Default = new JsonSerializerOptions

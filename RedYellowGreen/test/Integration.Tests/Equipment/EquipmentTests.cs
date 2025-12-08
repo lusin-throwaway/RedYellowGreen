@@ -1,6 +1,9 @@
 using FluentAssertions;
 using Integration.Tests.Utilities;
+using MassTransit;
+using Microsoft.AspNetCore.SignalR.Client;
 using RedYellowGreen.Api.Features.Equipment.Models;
+using RedYellowGreen.Api.Features.LiveUpdates;
 
 namespace Integration.Tests.Equipment;
 
@@ -62,5 +65,36 @@ public class EquipmentTests : IntegrationTestBase
 
         var history = await Client.GetEquipmentStateHistory(equipmentId);
         history.Should().HaveCount(2);
+    }
+
+
+    [TestMethod]
+    public async Task SetEquipmentState_ToDifferentState_LiveUpdateBroadcastes()
+    {
+        // arrange
+        var equipmentId = await Client.CreateEquipment();
+        var connection = Client.CreateLiveUpdatesHubConnection();
+
+
+        var result = new TaskCompletionSource<ILiveUpdateHub.EquipmentStateChangedEvent>();
+
+        connection.On<ILiveUpdateHub.EquipmentStateChangedEvent>(
+            "EquipmentStateChanged",
+            msg => result.TrySetResult(msg)
+        );
+
+        await connection.StartAsync();
+
+        // act
+        var newState = EquipmentState.Green;
+        await Client.SetEquipmentState(equipmentId, newState);
+
+        // assert
+        await Task.WhenAny(result.Task, Task.Delay(500));
+        var receivedPayload = await result.Task;
+
+        receivedPayload
+            .Should()
+            .BeEquivalentTo(new ILiveUpdateHub.EquipmentStateChangedEvent(equipmentId, newState));
     }
 }

@@ -5,9 +5,17 @@ namespace RedYellowGreen.Api.Features.LiveUpdates;
 
 public interface ILiveUpdateHub
 {
-    Task EquipmentStateChanged(Guid equipmentId, EquipmentState state);
-    Task OrderCreated(Guid orderId, Guid equipmentId);
-    Task OrderCompleted(Guid orderId);
+    public record EquipmentStateChangedEvent(Guid Id, EquipmentState State);
+
+    Task EquipmentStateChanged(EquipmentStateChangedEvent @event);
+
+    public record OrderCreatedEvent(Guid OrderId, Guid EquipmentId);
+
+    Task OrderCreated(OrderCreatedEvent @event);
+
+    public record OrderCompletedEvent(Guid OrderId);
+
+    Task OrderCompleted(OrderCompletedEvent @event);
 }
 
 public class LiveUpdateHub : Hub<ILiveUpdateHub>
