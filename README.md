@@ -1,11 +1,23 @@
 # RedYellowGreen
 
+# Setup
+
+This project contains a docker compose with a database, ui and an api server. To start them run:
+```shell
+docker compose up -d
+```
+Once all 3 containers are up - navigate to [localhost:3000](http://localhost:3000) to open the UI react app.
+
+In this app there will be 2 views for the different actors of the case - supervisor view and worker view.
+
+More context about either in the [Outcome section](#Outcome)
+
 ## Assumptions / interpretation
 
 ### Current situation
 
-Currently workers walk around the factory and change the equipment state manually, then they mark the state by attaching a magnet with color (Red/Yellow/Green) to the physical equipment.
-The problem is that there's no high level overview of all the equipment as it's only possible to see a state of equipment by physically seeing which color magnet is attached to it. Same for setting the state.
+Currently workers walk around the factory and change the equipment state manually, then they mark the state by attaching a magnet with color (`Red/Yellow/Green`) to the physical equipment.
+The problem is that there's no overview of all the equipment as it's only possible to see the state of each piece of equipment by physically seeing which color magnet is attached to it. Same for setting the state.
 
 Supervisors schedule orders, presumably in an analog way as well.
 
@@ -85,7 +97,7 @@ There should be 2 separate dashboards / views for different actors:
         - updates on new orders
         - updates on completed orders
 
-    - EF to communicate with the database
+    - EF to communicate with and manage the database
     - MassTransit for messaging
     - MSTest for testing, just because I have the most (recent) experience with it
 
