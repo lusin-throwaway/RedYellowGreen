@@ -1,6 +1,7 @@
 import { api } from "./client";
 import type {
   EquipmentState,
+  GetEquipmentStateHistoryResult,
   GetSupervisorViewEquipmentResult,
   GetWorkerViewEquipmentResult,
 } from "./types";
@@ -88,18 +89,18 @@ export function useCompleteOrder() {
 async function fetchSupervisorView(): Promise<
   GetSupervisorViewEquipmentResult[]
 > {
-  const { data } = await api.get("/api/supervisor-view");
+  const { data } = await api.get("/api/equipment/supervisor-view");
   return data;
 }
 
 async function fetchWorkerView(): Promise<GetWorkerViewEquipmentResult[]> {
-  const { data } = await api.get("/api/worker-view");
+  const { data } = await api.get("/api/equipment/worker-view");
   return data;
 }
 
 async function fetchEquipmentStateHistory(
   equipmentId: string
-): Promise<GetWorkerViewEquipmentResult[]> {
+): Promise<GetEquipmentStateHistoryResult[]> {
   const { data } = await api.get(
     `/api/worker-view/${equipmentId}/state-history`
   );
