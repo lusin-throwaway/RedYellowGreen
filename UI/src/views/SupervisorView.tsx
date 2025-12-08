@@ -4,20 +4,17 @@ import {
   useEquipmentStateHistory,
   useCreateOrder,
 } from "../api/queries";
-import { type GetEquipmentStateHistoryResult } from "../api/types";
 
 export default function SupervisorView() {
   const { data: equipment, isLoading } = useSupervisorView();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const { data: history } = useEquipmentStateHistory(selectedId || undefined);
-  const createOrderMutation = useCreateOrder();
-
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || !equipment) return <div>Loading...</div>;
 
   return (
     <div style={{ padding: 20 }}>
       <h1>Supervisor View</h1>
+      <h2>Equipment</h2>
 
       {/* EQUIPMENT TABLE */}
       <table border={1} cellPadding={10} style={{ marginTop: 20 }}>
@@ -46,11 +43,10 @@ export default function SupervisorView() {
       {selectedId && (
         <SidePanel
           equipmentId={selectedId}
-          history={history || []}
           onClose={() => setSelectedId(null)}
-          onScheduleOrder={() => {
-            createOrderMutation.mutate();
-          }}
+          equipmentTitle={
+            equipment.find((e) => e.id === selectedId)?.title || ""
+          }
         />
       )}
     </div>
@@ -62,15 +58,18 @@ export default function SupervisorView() {
 // --------------------------------------------------
 function SidePanel({
   equipmentId,
-  history,
-  onScheduleOrder,
+  equipmentTitle,
   onClose,
 }: {
   equipmentId: string;
-  history: GetEquipmentStateHistoryResult[];
-  onScheduleOrder: () => void;
+  equipmentTitle: string;
   onClose: () => void;
 }) {
+  const { data: history } = useEquipmentStateHistory(equipmentId);
+  const { mutate: createOrder } = useCreateOrder(equipmentId);
+
+  if (!history) return null;
+
   return (
     <div
       style={{
@@ -88,8 +87,9 @@ function SidePanel({
 
       <h2>Equipment Details</h2>
       <p>ID: {equipmentId}</p>
+      <p>Title: {equipmentTitle}</p>
 
-      <button onClick={onScheduleOrder} style={{ marginTop: 20 }}>
+      <button onClick={() => createOrder()} style={{ marginTop: 20 }}>
         Schedule New Order
       </button>
 

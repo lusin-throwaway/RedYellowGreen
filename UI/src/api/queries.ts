@@ -58,11 +58,11 @@ export function useSetEquipmentState() {
   });
 }
 
-export function useCreateOrder() {
+export function useCreateOrder(equipmentId: string) {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: createOrder,
+    mutationFn: () => createOrder(equipmentId),
     onSuccess: () => {
       // Invalidate whichever views show orders
       qc.invalidateQueries({ queryKey: keys.orders });
@@ -102,7 +102,7 @@ async function fetchEquipmentStateHistory(
   equipmentId: string
 ): Promise<GetEquipmentStateHistoryResult[]> {
   const { data } = await api.get(
-    `/api/worker-view/${equipmentId}/state-history`
+    `/api/equipment/${equipmentId}/state-history`
   );
   return data;
 }
@@ -113,8 +113,8 @@ async function setEquipmentState(equipmentId: string, state: EquipmentState) {
   });
 }
 
-async function createOrder(): Promise<string> {
-  const { data } = await api.post(`/api/orders`);
+async function createOrder(equipmentId: string): Promise<string> {
+  const { data } = await api.post(`/api/orders`, { equipmentId });
   return data;
 }
 

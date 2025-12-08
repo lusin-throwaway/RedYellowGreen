@@ -68,8 +68,6 @@ services.AddMassTransit(x =>
 services.AddOpenApi();
 
 var app = builder.Build();
-app.UseCors();
-app.MapHub<LiveUpdateHub>("ws/updates");
 
 var runMigrations = Environment.GetEnvironmentVariable("RUN_MIGRATIONS") is "true";
 if (runMigrations)
@@ -93,8 +91,10 @@ if (runMigrations)
     }
 }
 
-
 app.MapOpenApi();
 app.UseExceptionHandler();
 app.MapControllers();
+app.UseCors();
+app.MapHub<LiveUpdateHub>("ws/updates");
+
 app.Run();
