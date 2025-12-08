@@ -3,8 +3,9 @@ using System.Text.Json.Serialization;
 using MassTransit;
 using MassTransit.Metadata;
 using Microsoft.EntityFrameworkCore;
-using RedYellowGreen.Api.Features;
+using RedYellowGreen.Api.Features.Equipment.Models;
 using RedYellowGreen.Api.Features.LiveUpdates;
+using RedYellowGreen.Api.Features.Orders.Models;
 using RedYellowGreen.Api.Infrastructure.Database;
 using RedYellowGreen.Api.Infrastructure.Database.Interceptors;
 using RedYellowGreen.Api.Infrastructure.Middleware;
@@ -76,6 +77,20 @@ if (runMigrations)
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
+
+    if (!db.Equipment.Any())
+    {
+        var equipmentEntity = EquipmentEntity.Create("Equipment 1");
+        equipmentEntity.Orders.Add(new OrderEntity
+        {
+            Equipment = equipmentEntity,
+            OrderNumber = "Order1"
+        });
+        db.Equipment.Add(equipmentEntity);
+        db.Equipment.Add(EquipmentEntity.Create("Equipment 2"));
+        db.Equipment.Add(EquipmentEntity.Create("Equipment 3"));
+        db.SaveChanges();
+    }
 }
 
 
