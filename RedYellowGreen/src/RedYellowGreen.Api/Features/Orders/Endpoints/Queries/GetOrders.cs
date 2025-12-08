@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RedYellowGreen.Api.Features.Equipment.Models;
+using RedYellowGreen.Api.Features.Orders.Models;
 using RedYellowGreen.Api.Infrastructure.Database;
 
 namespace RedYellowGreen.Api.Features.Orders.Endpoints.Queries;
@@ -20,6 +21,7 @@ public class GetOrders : BaseOrdersController
         [FromServices] AppDbContext dbContext
     ) =>
         await dbContext.Orders
+            .Where(order => order.Status != OrderStatus.Done)
             .Select(o =>
                 new Result(
                     o.Id,

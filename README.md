@@ -4,7 +4,7 @@
 
 ### Current situation
 
-Currently workers walk around the factory and change its state manually, then they mark the state by attaching a magnet with color (Red/Yellow/Green) to the physical equipment.
+Currently workers walk around the factory and change the equipment state manually, then they mark the state by attaching a magnet with color (Red/Yellow/Green) to the physical equipment.
 The problem is that there's no high level overview of all the equipment as it's only possible to see a state of equipment by physically seeing which color magnet is attached to it. Same for setting the state.
 
 Supervisors schedule orders, presumably in an analog way as well.
@@ -35,7 +35,7 @@ There should be 2 separate dashboards / views for different actors:
         - Done orders are out of scope of this dashboard and are removed from the view 
     - Implementation:
         - A table of equipment that indicates the equipment title and has a button 'see more details'
-        - On clickin a specific equipments 'see more details' - a side panel opens that allows for scheduling new orders - a button 'schedule new order', and shows the history of states for that piece of equipment - a table with columns (state, timestamp)
+        - On clicking a specific equipment 'see more details' button - a side panel opens that allows for scheduling new orders - a button 'schedule new order', and shows the history of states for that piece of equipment - a table with columns (state, timestamp)
         - A second table of all global orders, with columns (order number, assigned equipment title, equipment state).
         - Live updates on equipment state changes.
         - When an order is marked as done by a worker - it's removed from this view.

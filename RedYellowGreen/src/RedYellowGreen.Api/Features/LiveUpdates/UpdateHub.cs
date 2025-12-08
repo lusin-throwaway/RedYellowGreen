@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.SignalR;
 using RedYellowGreen.Api.Features.Equipment.Models;
 
-namespace RedYellowGreen.Api.Features;
+namespace RedYellowGreen.Api.Features.LiveUpdates;
 
-public interface IUpdateHub
+public interface ILiveUpdateHub
 {
     Task EquipmentStateChanged(Guid equipmentId, EquipmentState state);
-    Task OrderAdded(Guid orderId, Guid equipmentId);
+    Task OrderCreated(Guid orderId, Guid equipmentId);
     Task OrderCompleted(Guid orderId);
 }
 
-public class UpdateHub : Hub<IUpdateHub>
+public class LiveUpdateHub : Hub<ILiveUpdateHub>
 {
 }
